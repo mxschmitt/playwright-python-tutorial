@@ -7,7 +7,9 @@ This module contains shared fixtures.
 # ------------------------------------------------------------
 
 import os
+from typing import Optional
 import pytest
+from playwright.sync_api import Playwright, APIRequestContext, Page
 
 
 # ------------------------------------------------------------
@@ -19,12 +21,12 @@ from pages.search import DuckDuckGoSearchPage
 
 
 @pytest.fixture
-def result_page(page):
+def result_page(page: Page):
     return DuckDuckGoResultPage(page)
 
 
 @pytest.fixture
-def search_page(page):
+def search_page(page: Page):
     return DuckDuckGoSearchPage(page)
 
 
@@ -34,7 +36,7 @@ def search_page(page):
 
 # Environment variables
 
-def _get_env_var(varname):
+def _get_env_var(varname: Optional[str]) -> str:
     value = os.getenv(varname)
     assert value, f'{varname} is not set'
     return value
@@ -63,7 +65,7 @@ def gh_project_name():
 # Request context
 
 @pytest.fixture(scope='session')
-def gh_context(playwright, gh_access_token):
+def gh_context(playwright: Playwright, gh_access_token: str):
     headers = {
         "Accept": "application/vnd.github.v3+json",
         "Authorization": f"token {gh_access_token}"}
@@ -79,7 +81,7 @@ def gh_context(playwright, gh_access_token):
 # GitHub project requests
 
 @pytest.fixture(scope='session')
-def gh_project(gh_context, gh_username, gh_project_name):
+def gh_project(gh_context: APIRequestContext, gh_username, gh_project_name):
     resource = f'/users/{gh_username}/projects'
     response = gh_context.get(resource)
     assert response.ok
@@ -93,7 +95,7 @@ def gh_project(gh_context, gh_username, gh_project_name):
 
 
 @pytest.fixture()
-def project_columns(gh_context, gh_project):
+def project_columns(gh_context: APIRequestContext, gh_project):
     response = gh_context.get(gh_project['columns_url'])
     assert response.ok
 

@@ -4,6 +4,9 @@ These tests cover DuckDuckGo searches.
 
 import pytest
 
+from pages.result import DuckDuckGoResultPage
+from pages.search import DuckDuckGoSearchPage
+
 
 ANIMALS = [
     'panda',
@@ -20,7 +23,7 @@ ANIMALS = [
 
 
 @pytest.mark.parametrize('phrase', ANIMALS)
-def test_basic_duckduckgo_search(search_page, result_page, phrase):
+def test_basic_duckduckgo_search(search_page: DuckDuckGoSearchPage, result_page: DuckDuckGoResultPage, phrase):
 
     # Given the DuckDuckGo home page is displayed
     search_page.load()

@@ -47,7 +47,7 @@ def test_basic_duckduckgo_search(page):
     page.click('#search_button_homepage')
 
     # Then the search result query is the phrase
-    assert 'panda' == page.input_value('#search_form_input')
+    expect(page.locator('#search_form_input')).to_have_value('panda')
 
     # And the search result links pertain to the phrase
     # And the search result title contains the phrase
@@ -110,7 +110,7 @@ Explicit waiting will be tricky.
 Add the following line to the test:
 
 ```python
-    page.locator('.result__title a.result__a >> nth=4').wait_for()
+    page.locator('.result__title a.result__a').nth(4).wait_for()
 ```
 
 Let's break this down:

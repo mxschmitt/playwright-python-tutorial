@@ -9,7 +9,7 @@ Part 1 of the tutorial explains how to set up a Python test automation project w
 It is an open source project developed by Microsoft.
 
 Playwright is a fantastic alternative to [Selenium WebDriver](https://www.selenium.dev/) for web UI testing.
-Like Selenium WebDriver, Playwright has language bindings in multiple languages: Python, .NET, Java, and JavaScript.
+Like Selenium WebDriver, Playwright has language bindings in multiple languages: Python, .NET, Java, and Node.js.
 Playwright also refines many of the pain points in Selenium WebDriver.
 Some examples include:
 

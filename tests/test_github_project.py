@@ -8,14 +8,14 @@ These tests cover API interactions for GitHub projects.
 
 import time
 
-from playwright.sync_api import expect
+from playwright.sync_api import expect, APIRequestContext
 
 
 # ------------------------------------------------------------
 # A pure API test
 # ------------------------------------------------------------
 
-def test_create_project_card(gh_context, project_column_ids):
+def test_create_project_card(gh_context: APIRequestContext, project_column_ids):
 
     # Prep test data
     now = time.time()
@@ -25,13 +25,13 @@ def test_create_project_card(gh_context, project_column_ids):
     c_response = gh_context.post(
         f'/projects/columns/{project_column_ids[0]}/cards',
         data={'note': note})
-    assert c_response.ok
+    expect(c_response).to_be_ok()
     assert c_response.json()['note'] == note
 
     # Retrieve the newly created card
     card_id = c_response.json()['id']
     r_response = gh_context.get(f'/projects/columns/cards/{card_id}')
-    assert r_response.ok
+    expect(r_response).to_be_ok()
     assert r_response.json() == c_response.json()
 
 
@@ -39,7 +39,7 @@ def test_create_project_card(gh_context, project_column_ids):
 # A hybrid UI/API test
 # ------------------------------------------------------------
 
-def test_move_project_card(gh_context, gh_project, project_column_ids, page, gh_username, gh_password):
+def test_move_project_card(gh_context: APIRequestContext, gh_project, project_column_ids, page, gh_username, gh_password):
 
     # Prep test data
     source_col = project_column_ids[0]
@@ -76,5 +76,5 @@ def test_move_project_card(gh_context, gh_project, project_column_ids, page, gh_
     # Verify the backend is updated via API
     card_id = c_response.json()['id']
     r_response = gh_context.get(f'/projects/columns/cards/{card_id}')
-    assert r_response.ok
+    expect(r_response).to_be_ok()
     assert r_response.json()['column_url'].endswith(str(dest_col))
